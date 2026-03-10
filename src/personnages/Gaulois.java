@@ -3,12 +3,11 @@ package personnages;
 public class Gaulois {
 	private String nom;
 	private int force;
-	private int health;
+	private int effetPotion = 1;
 	
 	public Gaulois(String nom, int force) {
 		this.nom = nom;
 		this.force = force;
-		this.health = 100;
 	}
 
 	public String getNom() {
@@ -23,28 +22,30 @@ public class Gaulois {
 		return "Le gaulois " + nom + " : ";
 	}
 	
-	public void takeDamage(int damage) {
-		this.parler("Aie");
-		this.health -= damage;
-		if (this.health<=0) {
-			System.out.println(this.prendreParole() + " est mort");
-			this.force = 0;
-		}
+	public void frapper(Romain romain) {
+		String nomRomain = romain.getNom();
+		System.out.println(this.nom + " envoie un grand coup dans la machoire de " + nomRomain);
+		int forceCoup = this.effetPotion * force/3;
+		romain.recevoirCoup(forceCoup);
 	}
 	
-	public void hit(Romain r) {
-		this.parler("prend ça");
-		r.takeDamage(force);
+	public void boirePotion(int forcePotion) {
+		this.effetPotion = forcePotion;
 	}
 	
 	public static void main(String[] args) {
-		Gaulois G1 = new Gaulois("astérix", 50);
-		Romain R1 = new Romain("cesar", 10);
-		G1.parler("Bonjour je suis "+ G1.getNom());
-		G1.hit(R1);
-		R1.hit(G1);
-		G1.hit(R1);
+		Gaulois asterix = new Gaulois("astérix", 8);
+		Romain r1 = new Romain("cesar", 7);
+		asterix.frapper(r1);
+		asterix.frapper(r1);
+		asterix.frapper(r1);
+		asterix.frapper(r1);
 		
+	}
+
+	@Override
+	public String toString() {
+		return nom;
 	}
 	
 
